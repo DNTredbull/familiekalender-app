@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
     };
 
-    // Opprett navigasjonselementer
+    // Navigering mellom måneder
     const navigationContainer = document.createElement('div');
     navigationContainer.className = 'calendar-navigation';
 
@@ -56,70 +56,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById('calendar').prepend(navigationContainer);
 
+    // Modal-vindu for å legge til hendelser
     const openEventModal = (eventKey, day, month, year) => {
-        const modal = document.createElement('div');
-        modal.className = 'modal';
-
-        const modalContent = document.createElement('div');
-        modalContent.className = 'modal-content';
-
-        const header = document.createElement('h3');
-        header.textContent = `Hendelser for ${day}. ${monthNames[month]} ${year}`;
-        modalContent.appendChild(header);
-
-        const eventList = document.createElement('ul');
-        eventList.className = 'event-list';
-
-        if (events[eventKey]) {
-            events[eventKey].forEach((eventText, index) => {
-                const listItem = document.createElement('li');
-                listItem.textContent = eventText;
-                listItem.onclick = () => {
-                    if (confirm(`Slett hendelse: ${eventText}?`)) {
-                        events[eventKey].splice(index, 1);
-                        if (events[eventKey].length === 0) {
-                            delete events[eventKey];
-                        }
-                        saveEvents();
-                        renderCalendar(currentMonth, currentYear);
-                        document.body.removeChild(modal);
-                    }
-                };
-                eventList.appendChild(listItem);
-            });
-        }
-
-        modalContent.appendChild(eventList);
-
-        const input = document.createElement('textarea');
-        modalContent.appendChild(input);
-
-        const saveButton = document.createElement('button');
-        saveButton.textContent = 'Legg til';
-        saveButton.onclick = () => {
-            if (input.value.trim() !== "") {
-                if (!events[eventKey]) {
-                    events[eventKey] = [];
-                }
-                events[eventKey].push(input.value);
-                saveEvents();
-                renderCalendar(currentMonth, currentYear);
-                document.body.removeChild(modal);
+        const eventText = prompt(`Legg til hendelse for ${day}. ${monthNames[month]} ${year}`);
+        const eventTime = prompt(`Legg til klokkeslett (HH:MM) for hendelsen:`);
+        
+        if (eventText) {
+            if (!events[eventKey]) {
+                events[eventKey] = [];
             }
-        };
-
-        const closeButton = document.createElement('button');
-        closeButton.textContent = 'Lukk';
-        closeButton.onclick = () => {
-            document.body.removeChild(modal);
-        };
-
-        modalContent.appendChild(saveButton);
-        modalContent.appendChild(closeButton);
-        modal.appendChild(modalContent);
-
-        document.body.appendChild(modal);
+            const eventEntry = eventTime ? `${eventText} kl. ${eventTime}` : eventText;
+            events[eventKey].push(eventEntry);
+            saveEvents();
+            renderCalendar(month, year);
+        }
     };
+    
 
     const renderCalendar = (month, year) => {
         daysContainer.innerHTML = "";
@@ -171,7 +123,63 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
         }
+        renderEventList(month, year);
     };
+
+    const renderEventList = (month, year) => {
+        const eventListContainer = document.getElementById('event-list');
+        eventListContainer.innerHTML = '';
+    
+        // 🚀 Lag en sortert liste
+        const sortedKeys = Object.keys(events)
+            .filter(key => {
+                const [day, eventMonth, eventYear] = key.split('-').map(Number);
+                return eventMonth === month && eventYear === year;
+            })
+            .sort((a, b) => {
+                const [dayA] = a.split('-').map(Number);
+                const [dayB] = b.split('-').map(Number);
+                return dayA - dayB;
+            });
+    
+        sortedKeys.forEach((key) => {
+            const [day, eventMonth, eventYear] = key.split('-').map(Number);
+    
+            const eventWrapper = document.createElement('div');
+            eventWrapper.className = 'event-wrapper';
+    
+            const dateTitle = document.createElement('h4');
+            dateTitle.textContent = `${day}. ${monthNames[month]} ${year}`;
+            eventWrapper.appendChild(dateTitle);
+    
+            events[key].forEach((eventText, index) => {
+                const eventItem = document.createElement('div');
+                eventItem.className = 'event-item';
+                eventItem.textContent = eventText;
+    
+                // 🔴 Slett-knapp
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Slett';
+                deleteButton.className = 'delete-button';
+                deleteButton.onclick = () => {
+                    if (confirm('Er du sikker på at du vil slette denne hendelsen?')) {
+                        events[key].splice(index, 1);
+                        if (events[key].length === 0) {
+                            delete events[key];
+                        }
+                        saveEvents();
+                        renderCalendar(month, year);
+                    }
+                };
+    
+                eventItem.appendChild(deleteButton);
+                eventWrapper.appendChild(eventItem);
+            });
+    
+            eventListContainer.appendChild(eventWrapper);
+        });
+    };
+    
 
     renderCalendar(currentMonth, currentYear);
 });
