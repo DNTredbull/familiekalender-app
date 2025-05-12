@@ -59,18 +59,30 @@ document.addEventListener("DOMContentLoaded", function () {
     // Modal-vindu for å legge til hendelser
     const openEventModal = (eventKey, day, month, year) => {
         const eventText = prompt(`Legg til hendelse for ${day}. ${monthNames[month]} ${year}`);
-        const eventTime = prompt(`Legg til klokkeslett (HH:MM) for hendelsen:`);
         
+        // Ny prompt for klokkeslett
+        let eventTime = prompt(`Legg til klokkeslett (HH:MM) for hendelsen:`);
+        
+        // Validerer at formatet er korrekt
+        const timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/;
+        while (eventTime && !timePattern.test(eventTime)) {
+            alert("Ugyldig klokkeslett! Bruk format HH:MM");
+            eventTime = prompt(`Legg til klokkeslett (HH:MM) for hendelsen:`);
+        }
+    
         if (eventText) {
             if (!events[eventKey]) {
                 events[eventKey] = [];
             }
+    
+            // Hvis det er klokkeslett, vises det
             const eventEntry = eventTime ? `${eventText} kl. ${eventTime}` : eventText;
             events[eventKey].push(eventEntry);
             saveEvents();
             renderCalendar(month, year);
         }
     };
+    
     
 
     const renderCalendar = (month, year) => {
@@ -130,7 +142,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const eventListContainer = document.getElementById('event-list');
         eventListContainer.innerHTML = '';
     
-        // 🚀 Lag en sortert liste
         const sortedKeys = Object.keys(events)
             .filter(key => {
                 const [day, eventMonth, eventYear] = key.split('-').map(Number);
@@ -155,7 +166,36 @@ document.addEventListener("DOMContentLoaded", function () {
             events[key].forEach((eventText, index) => {
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
-                eventItem.textContent = eventText;
+    
+                // 🚀 Input-felt for redigering
+                const eventInput = document.createElement('input');
+                eventInput.type = 'text';
+                eventInput.value = eventText;
+                eventInput.disabled = true;
+                eventItem.appendChild(eventInput);
+    
+                // 🔄 Rediger-knapp
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Rediger';
+                editButton.className = 'edit-button';
+                editButton.onclick = () => {
+                    eventInput.disabled = false;
+                    eventInput.focus();
+                    saveButton.style.display = 'inline-block';
+                };
+    
+                // 💾 Lagre-knapp
+                const saveButton = document.createElement('button');
+                saveButton.textContent = 'Lagre';
+                saveButton.className = 'save-button';
+                saveButton.style.display = 'none';
+                saveButton.onclick = () => {
+                    const newValue = eventInput.value;
+                    events[key][index] = newValue;
+                    saveEvents();
+                    eventInput.disabled = true;
+                    saveButton.style.display = 'none';
+                };
     
                 // 🔴 Slett-knapp
                 const deleteButton = document.createElement('button');
@@ -172,13 +212,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 };
     
+                eventItem.appendChild(editButton);
+                eventItem.appendChild(saveButton);
                 eventItem.appendChild(deleteButton);
+    
                 eventWrapper.appendChild(eventItem);
             });
     
             eventListContainer.appendChild(eventWrapper);
         });
     };
+    
+    
     
 
     renderCalendar(currentMonth, currentYear);
