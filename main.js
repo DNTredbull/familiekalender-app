@@ -149,6 +149,10 @@ document.addEventListener("DOMContentLoaded", function () {
             dayElement.textContent = day;
             dayElement.className = 'day';
 
+            if (day === currentDate.getDate() && month === currentDate.getMonth() && year === currentDate.getFullYear()) {
+                dayElement.classList.add('today');
+            }
+
             const eventKey = `${day}-${month}-${year}`;
             dayElement.onclick = () => openEventModal(eventKey, day, month, year);
 
