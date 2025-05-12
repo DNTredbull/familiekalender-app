@@ -15,86 +15,12 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem('calendarEvents', JSON.stringify(events));
     };
 
-    const renderCalendar = (month, year) => {
-        daysContainer.innerHTML = "";
-
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const firstDay = new Date(year, month, 1).getDay();
-        const adjustedFirstDay = (firstDay === 0) ? 6 : firstDay - 1;
-
-        const monthDisplay = document.getElementById('month-display');
-        if (monthDisplay) {
-            monthDisplay.textContent = `${monthNames[month]} ${year}`;
-        }
-
-        for (let i = 0; i < adjustedFirstDay; i++) {
-            const emptyDiv = document.createElement('div');
-            daysContainer.appendChild(emptyDiv);
-        }
-
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dayElement = document.createElement('div');
-            dayElement.textContent = day;
-
-            if (
-                day === currentDate.getDate() &&
-                month === currentDate.getMonth() &&
-                year === currentDate.getFullYear()
-            ) {
-                dayElement.classList.add('today');
-            }
-
-            const eventKey = `${day}-${month}-${year}`;
-            if (events[eventKey]) {
-                const eventDot = document.createElement('div');
-                eventDot.className = 'event-dot';
-                eventDot.textContent = events[eventKey].length;
-                dayElement.appendChild(eventDot);
-            }
-
-            dayElement.onclick = () => openEventModal(eventKey, day, month, year);
-
-            daysContainer.appendChild(dayElement);
-        }
+    const getWeekNumber = (date) => {
+        const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+        const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+        return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
     };
 
-    // Navigasjonsknapper og månedstittel
-    const navContainer = document.createElement('div');
-    navContainer.className = 'navigation';
-
-    const prevButton = document.createElement('button');
-    prevButton.textContent = '◀';
-    prevButton.onclick = () => {
-        currentMonth--;
-        if (currentMonth < 0) {
-            currentMonth = 11;
-            currentYear--;
-        }
-        renderCalendar(currentMonth, currentYear);
-    };
-
-    const nextButton = document.createElement('button');
-    nextButton.textContent = '▶';
-    nextButton.onclick = () => {
-        currentMonth++;
-        if (currentMonth > 11) {
-            currentMonth = 0;
-            currentYear++;
-        }
-        renderCalendar(currentMonth, currentYear);
-    };
-
-    const monthDisplay = document.createElement('div');
-    monthDisplay.id = 'month-display';
-    navContainer.appendChild(prevButton);
-    navContainer.appendChild(monthDisplay);
-    navContainer.appendChild(nextButton);
-
-    document.getElementById('app').prepend(navContainer);
-
-    renderCalendar(currentMonth, currentYear);
-
-    // Legger tilbake modalen med funksjoner
     const openEventModal = (eventKey, day, month, year) => {
         const modal = document.createElement('div');
         modal.className = 'modal';
@@ -157,12 +83,66 @@ document.addEventListener("DOMContentLoaded", function () {
         modalContent.appendChild(closeButton);
         modal.appendChild(modalContent);
 
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                document.body.removeChild(modal);
-            }
-        });
-
         document.body.appendChild(modal);
     };
+
+    const renderCalendar = (month, year) => {
+        daysContainer.innerHTML = "";
+
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const firstDay = new Date(year, month, 1).getDay();
+        const adjustedFirstDay = (firstDay === 0) ? 6 : firstDay - 1;
+
+        const monthDisplay = document.getElementById('month-display');
+        if (monthDisplay) {
+            monthDisplay.textContent = `${monthNames[month]} ${year}`;
+        }
+
+        let currentWeekRow = document.createElement('tr');
+
+        const startOfWeek = new Date(year, month, 1 - adjustedFirstDay);
+        const weekNumberCell = document.createElement('td');
+        weekNumberCell.className = 'week-number';
+        weekNumberCell.textContent = `Uke ${getWeekNumber(startOfWeek)}`;
+        currentWeekRow.appendChild(weekNumberCell);
+
+        for (let i = 0; i < adjustedFirstDay; i++) {
+            const emptyCell = document.createElement('td');
+            emptyCell.className = 'day empty';
+            currentWeekRow.appendChild(emptyCell);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = document.createElement('td');
+            dayElement.textContent = day;
+            dayElement.className = 'day';
+
+            const eventKey = `${day}-${month}-${year}`;
+            if (events[eventKey]) {
+                const eventDot = document.createElement('div');
+                eventDot.className = 'event-dot';
+                eventDot.textContent = events[eventKey].length;
+                dayElement.appendChild(eventDot);
+            }
+
+            dayElement.onclick = () => openEventModal(eventKey, day, month, year);
+
+            currentWeekRow.appendChild(dayElement);
+
+            if ((day + adjustedFirstDay) % 7 === 0 || day === daysInMonth) {
+                daysContainer.appendChild(currentWeekRow);
+                if (day !== daysInMonth) {
+                    currentWeekRow = document.createElement('tr');
+
+                    const nextWeekDate = new Date(year, month, day + 1);
+                    const nextWeekNumberCell = document.createElement('td');
+                    nextWeekNumberCell.className = 'week-number';
+                    nextWeekNumberCell.textContent = `Uke ${getWeekNumber(nextWeekDate)}`;
+                    currentWeekRow.appendChild(nextWeekNumberCell);
+                }
+            }
+        }
+    };
+
+    renderCalendar(currentMonth, currentYear);
 });

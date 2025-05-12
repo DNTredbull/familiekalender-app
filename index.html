@@ -12,21 +12,28 @@
     <div id="app">
         <h1>Familie Kalender</h1>
         <div id="calendar">
-            <!-- Uke-dager -->
-            <div class="weekdays">
-                <div>Mandag</div>
-                <div>Tirsdag</div>
-                <div>Onsdag</div>
-                <div>Torsdag</div>
-                <div>Fredag</div>
-                <div>Lørdag</div>
-                <div>Søndag</div>
-            </div>
-            <!-- Kalender rutenett -->
-            <div class="days"></div>
+            <table class="calendar-table">
+                <!-- Uke-dager -->
+                <thead>
+                    <tr>
+                        <th>Uke</th>
+                        <th>Mandag</th>
+                        <th>Tirsdag</th>
+                        <th>Onsdag</th>
+                        <th>Torsdag</th>
+                        <th>Fredag</th>
+                        <th>Lørdag</th>
+                        <th>Søndag</th>
+                    </tr>
+                </thead>
+                <tbody class="days">
+                    <!-- Her fyller vi med JavaScript -->
+                </tbody>
+            </table>
         </div>
     </div>
-    <script src="main.js"></script>
+    <script src="main.js" defer></script>
 </body>
+
 
 </html>
