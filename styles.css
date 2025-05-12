@@ -104,34 +104,9 @@ button:hover {
 }
 
 /* ========================
- Responsive Design
+ Modal Styling
 ======================== */
 
-@media (max-width: 600px) {
-  #app {
-    width: 100%;
-    margin: 0;
-  }
-
-  .calendar-navigation {
-    flex-direction: column;
-  }
-
-  button {
-    width: 100%;
-    margin-bottom: 5px;
-  }
-
-  #month-display {
-    margin-bottom: 10px;
-  }
-
-  .calendar-table th,
-  .calendar-table td {
-    padding: 5px;
-  }
-}
-/* Modal Styling */
 .modal {
   position: fixed;
   top: 0;
@@ -162,4 +137,38 @@ button:hover {
 .modal-content button {
   width: 100%;
   margin-top: 10px;
+}
+
+/* ========================
+ Responsive Design
+======================== */
+
+@media (max-width: 600px) {
+  #app {
+    width: 100%;
+    margin: 0;
+  }
+
+  .calendar-navigation {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  #month-display {
+    margin-bottom: 10px;
+  }
+
+  .calendar-table th,
+  .calendar-table td {
+    padding: 5px;
+  }
+
+  .modal-content {
+    width: 90%;
+    max-width: 500px;
+  }
 }
