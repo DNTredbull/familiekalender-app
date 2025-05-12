@@ -120,3 +120,14 @@ h1 {
   color: white;
   font-weight: bold;
 }
+.calendar-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+#month-display {
+  font-weight: bold;
+}

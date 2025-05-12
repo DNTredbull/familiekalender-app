@@ -21,6 +21,41 @@ document.addEventListener("DOMContentLoaded", function () {
         return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
     };
 
+    // Opprett navigasjonselementer
+    const navigationContainer = document.createElement('div');
+    navigationContainer.className = 'calendar-navigation';
+
+    const prevButton = document.createElement('button');
+    prevButton.textContent = '◀';
+    prevButton.onclick = () => {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar(currentMonth, currentYear);
+    };
+
+    const nextButton = document.createElement('button');
+    nextButton.textContent = '▶';
+    nextButton.onclick = () => {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        renderCalendar(currentMonth, currentYear);
+    };
+
+    const monthDisplay = document.createElement('div');
+    monthDisplay.id = 'month-display';
+
+    navigationContainer.appendChild(prevButton);
+    navigationContainer.appendChild(monthDisplay);
+    navigationContainer.appendChild(nextButton);
+
+    document.getElementById('calendar').prepend(navigationContainer);
+
     const openEventModal = (eventKey, day, month, year) => {
         const modal = document.createElement('div');
         modal.className = 'modal';
@@ -93,10 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const firstDay = new Date(year, month, 1).getDay();
         const adjustedFirstDay = (firstDay === 0) ? 6 : firstDay - 1;
 
-        const monthDisplay = document.getElementById('month-display');
-        if (monthDisplay) {
-            monthDisplay.textContent = `${monthNames[month]} ${year}`;
-        }
+        monthDisplay.textContent = `${monthNames[month]} ${year}`;
 
         let currentWeekRow = document.createElement('tr');
 
@@ -118,13 +150,6 @@ document.addEventListener("DOMContentLoaded", function () {
             dayElement.className = 'day';
 
             const eventKey = `${day}-${month}-${year}`;
-            if (events[eventKey]) {
-                const eventDot = document.createElement('div');
-                eventDot.className = 'event-dot';
-                eventDot.textContent = events[eventKey].length;
-                dayElement.appendChild(eventDot);
-            }
-
             dayElement.onclick = () => openEventModal(eventKey, day, month, year);
 
             currentWeekRow.appendChild(dayElement);
