@@ -107,94 +107,59 @@ button:hover {
  Modal Styling
 ======================== */
 
-.modal {
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 1000;
 }
 
-.modal-content {
-  background-color: white;
-  border-radius: 8px;
+.modal {
+  background-color: #fff;
   padding: 20px;
-  width: 400px;
-  max-width: 90%;
-  position: relative;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-.modal-content h3 {
-  margin-bottom: 15px;
-  text-align: center;
+.modal h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
 }
 
-.modal-content button {
-  width: 100%;
+.modal label {
+  display: block;
   margin-top: 10px;
-}
-.event-wrapper {
-  background-color: #f9f9f9;
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  font-weight: bold;
 }
 
-.event-item {
+.modal input,
+.modal textarea,
+.modal select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.modal-buttons {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
-  padding: 5px;
-  border-bottom: 1px solid #e0e0e0;
+  margin-top: 15px;
 }
 
-.event-item:last-child {
-  border-bottom: none;
-}
-
-.delete-button {
-  background-color: #e57373;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.delete-button:hover {
-  background-color: #d32f2f;
-}
-.edit-button,
-.save-button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
-  margin-left: 5px;
-}
-
-.edit-button:hover {
-  background-color: #45a049;
-}
-
-.save-button:hover {
-  background-color: #388e3c;
-}
-
-.event-item input {
-  margin-right: 5px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 60%;
+.modal-buttons button {
+  flex: 1;
+  margin: 0 5px;
 }
 
 /* ========================
@@ -223,10 +188,5 @@ button:hover {
   .calendar-table th,
   .calendar-table td {
     padding: 5px;
-  }
-
-  .modal-content {
-    width: 90%;
-    max-width: 500px;
   }
 }
