@@ -104,6 +104,13 @@ button:hover {
   top: 5px;
   right: 5px;
 }
+.calendar-table th {
+  white-space: nowrap;
+  font-size: 12px;
+  padding: 6px 4px;
+}
+
+
 
 /* ========================
  Modal Styling
@@ -200,4 +207,14 @@ button:hover {
     padding: 4px;
     font-size: 12px;
   }
+@media (max-width: 600px) {
+  body {
+    padding-top: 0;
+  }
+
+  #app {
+    margin-top: 0;
+  }
 }
+
+
