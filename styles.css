@@ -198,4 +198,12 @@ h1 {
   .calendar-table th {
     white-space: nowrap;
   }
+.calendar-table th,
+.calendar-table td {
+  padding: 0.4rem;
+  font-size: 0.85rem;
+  word-break: keep-all;
+  text-align: center;
+}
+
 }
