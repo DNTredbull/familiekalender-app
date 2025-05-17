@@ -1,0 +1,200 @@
+/* ========================
+   Kalender Styling
+======================== */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding-top: 0;
+}
+
+#app {
+  width: 100%;
+  max-width: 1000px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin: 20px auto;
+  padding-bottom: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin: 20px 0 10px;
+  color: #333;
+}
+
+.calendar-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 10px;
+  background-color: #e0f2e9;
+  font-weight: bold;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+#month-display {
+  font-size: 22px;
+  font-weight: bold;
+  color: #2b7a5b;
+}
+
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar-table th,
+.calendar-table td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  word-break: break-word;
+  position: relative;
+}
+
+.calendar-table th {
+  background-color: #2b7a5b;
+  color: white;
+  white-space: nowrap;
+  font-size: 13px;
+  padding: 8px 6px;
+}
+
+.week-number {
+  background-color: #a1d8c3;
+  color: #333;
+  font-weight: bold;
+}
+
+.today {
+  background-color: #4caf50 !important;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  display: inline-block;
+  margin: auto;
+}
+
+/* Hendelsesindikator */
+.event-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ff9800;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ========================
+ Modal Styling
+======================== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: #fff;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+
+.modal label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.modal input,
+.modal textarea,
+.modal select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.modal-buttons button {
+  flex: 1;
+  margin: 0 5px;
+}
+
+/* ========================
+ Responsive Design
+======================== */
+
+@media (max-width: 600px) {
+  body {
+    padding-top: 0;
+  }
+
+  #app {
+    margin: 0 10px;
+  }
+
+  h1 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .calendar-navigation {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  #month-display {
+    font-size: 18px;
+    margin: 5px 0;
+  }
+
+  .calendar-table th,
+  .calendar-table td {
+    padding: 4px;
+    font-size: 12px;
+  }
+
+  .calendar-table th {
+    white-space: nowrap;
+  }
+}
