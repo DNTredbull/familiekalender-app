@@ -37,6 +37,7 @@ h1 {
   padding: 16px 10px;
   background-color: #e0f2e9;
   font-weight: bold;
+  -webkit-user-select: none;
   user-select: none;
   touch-action: pan-y;
 }
