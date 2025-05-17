@@ -4,12 +4,13 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f7f9fc;
+  background-color: #f4f6f8;
   margin: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: 100vh;
+  padding-top: 0;
 }
 
 #app {
@@ -19,44 +20,31 @@ body {
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  margin: 20px;
+  margin: 20px auto;
+  padding-bottom: 20px;
 }
 
 h1 {
   text-align: center;
-  margin: 20px 0;
+  margin: 20px 0 10px;
   color: #333;
 }
 
 .calendar-navigation {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 10px;
-  background-color: #4caf50;
-  color: white;
+  padding: 16px 10px;
+  background-color: #e0f2e9;
   font-weight: bold;
+  user-select: none;
+  touch-action: pan-y;
 }
 
 #month-display {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
-  color: white;
-}
-
-button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #45a049;
+  color: #2b7a5b;
 }
 
 .calendar-table {
@@ -66,43 +54,49 @@ button:hover {
 
 .calendar-table th,
 .calendar-table td {
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   text-align: center;
   padding: 10px;
   font-size: 14px;
   word-break: break-word;
+  position: relative;
 }
 
 .calendar-table th {
-  background-color: #4caf50;
+  background-color: #2b7a5b;
   color: white;
+  white-space: nowrap;
+  font-size: 13px;
+  padding: 8px 6px;
 }
 
 .week-number {
-  background-color: #388e3c;
-  color: white;
+  background-color: #a1d8c3;
+  color: #333;
   font-weight: bold;
 }
 
 .today {
-  background-color: #66bb6a !important;
+  background-color: #4caf50 !important;
   color: white;
-  border-radius: 4px;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  display: inline-block;
+  margin: auto;
 }
 
+/* Hendelsesindikator */
 .event-dot {
-  width: 20px;
-  height: 20px;
-  background-color: #ff5722;
+  width: 8px;
+  height: 8px;
+  background-color: #ff9800;
   border-radius: 50%;
-  color: white;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: absolute;
-  top: 5px;
-  right: 5px;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /* ========================
@@ -169,8 +163,12 @@ button:hover {
 ======================== */
 
 @media (max-width: 600px) {
+  body {
+    padding-top: 0;
+  }
+
   #app {
-    margin: 10px;
+    margin: 0 10px;
   }
 
   h1 {
@@ -184,12 +182,6 @@ button:hover {
     padding: 10px;
   }
 
-  .calendar-navigation button {
-    width: 40px;
-    height: 40px;
-    margin: 5px;
-  }
-
   #month-display {
     font-size: 18px;
     margin: 5px 0;
@@ -199,5 +191,9 @@ button:hover {
   .calendar-table td {
     padding: 4px;
     font-size: 12px;
+  }
+
+  .calendar-table th {
+    white-space: nowrap;
   }
 }
